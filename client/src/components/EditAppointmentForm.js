@@ -2,18 +2,10 @@ import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const appointmentSchema = Yup.object().shape({
-  patient_id: Yup.number().required("Patient is required"),
-  doctor_id: Yup.number().required("Doctor is required"),
-  date: Yup.string().matches(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD").required("Date is required"),
-  time: Yup.string().required("Time is required"),
-});
-
 function generateTimes() {
   const times = [];
   let hour = 8;
   let minute = 0;
-
   while (hour < 17 || (hour === 17 && minute === 0)) {
     const hh = String(hour).padStart(2, '0');
     const mm = String(minute).padStart(2, '0');
@@ -26,17 +18,30 @@ function generateTimes() {
   }
   return times;
 }
-
 const timeOptions = generateTimes();
 
-function NewAppointmentForm({ onAddAppointment, patients, doctors }) {
+const appointmentSchema = Yup.object().shape({
+  patient_id: Yup.number().required("Patient is required"),
+  doctor_id: Yup.number().required("Doctor is required"),
+  date: Yup.string()
+    .matches(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD")
+    .required("Date is required"),
+  time: Yup.string().required("Time is required"),
+});
+
+function EditAppointmentForm({ appointment, onUpdateAppointment, patients, doctors }) {
   return (
     <Formik
-      initialValues={{ patient_id: "", doctor_id: "", date: "", time: "" }}
+      initialValues={{
+        patient_id: appointment.patient_id,
+        doctor_id: appointment.doctor_id,
+        date: appointment.date,
+        time: appointment.time,
+      }}
       validationSchema={appointmentSchema}
-      onSubmit={(values, { resetForm }) => {
-        fetch("http://127.0.0.1:5555/appointments", {
-          method: "POST",
+      onSubmit={(values, { setSubmitting }) => {
+        fetch(`http://127.0.0.1:5555/appointments/${appointment.id}`, {
+          method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(values),
         })
@@ -44,15 +49,19 @@ function NewAppointmentForm({ onAddAppointment, patients, doctors }) {
             if (!response.ok) throw new Error("Network response was not ok");
             return response.json();
           })
-          .then((newAppt) => {
-            onAddAppointment(newAppt);
-            resetForm();
+          .then((updatedAppt) => {
+            onUpdateAppointment(updatedAppt);
+            setSubmitting(false);
           })
-          .catch((error) => console.error("Error adding appointment:", error));
+          .catch((error) => {
+            console.error("Error updating appointment:", error);
+            setSubmitting(false);
+          });
       }}
     >
-      {() => (
-        <Form>
+      {({ isSubmitting }) => (
+        <Form style={{ border: "1px solid #ccc", padding: "10px", margin: "10px 0" }}>
+          <h4>Edit Appointment</h4>
           <div>
             <label>Patient: </label>
             <Field as="select" name="patient_id">
@@ -65,7 +74,7 @@ function NewAppointmentForm({ onAddAppointment, patients, doctors }) {
             </Field>
             <ErrorMessage name="patient_id" component="div" style={{ color: "red" }} />
           </div>
-          
+
           <div>
             <label>Doctor: </label>
             <Field as="select" name="doctor_id">
@@ -78,7 +87,7 @@ function NewAppointmentForm({ onAddAppointment, patients, doctors }) {
             </Field>
             <ErrorMessage name="doctor_id" component="div" style={{ color: "red" }} />
           </div>
-          
+
           <div>
             <label>Date (YYYY-MM-DD): </label>
             <Field name="date" />
@@ -98,11 +107,11 @@ function NewAppointmentForm({ onAddAppointment, patients, doctors }) {
             <ErrorMessage name="time" component="div" style={{ color: "red" }} />
           </div>
 
-          <button type="submit">Add Appointment</button>
+          <button type="submit" disabled={isSubmitting}>Update Appointment</button>
         </Form>
       )}
     </Formik>
   );
 }
 
-export default NewAppointmentForm;
+export default EditAppointmentForm;

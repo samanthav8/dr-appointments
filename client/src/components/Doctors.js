@@ -1,18 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {useState} from "react";
 import NewDoctorForm from "./NewDoctorForm";
 
-function Doctors() {
-  const [doctors, setDoctors] = useState([]);
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:5555/doctors")
-      .then((response) => response.json())
-      .then(setDoctors);
-  }, []);
-
-  function addDoctor(newDoctor) {
-    setDoctors((prev) => [...prev, newDoctor]);
-  }
+function Doctors({ doctors, onAddDoctor }) {
 
   return (
     <div>
@@ -25,7 +14,7 @@ function Doctors() {
         ))}
       </ul>
       <h3>Add a New Doctor</h3>
-      <NewDoctorForm onAddDoctor={addDoctor} />
+      <NewDoctorForm onAddDoctor={onAddDoctor} />
     </div>
   );
 }
