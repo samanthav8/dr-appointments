@@ -16,6 +16,8 @@ class Patient(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Patient id={self.id}, name={self.name}, dob={self.dob}>'
+    
+    serialize_rules = ('-appointments.patient',)
 
 class Doctor(db.Model, SerializerMixin):
     __tablename__ = 'doctors'
@@ -28,6 +30,8 @@ class Doctor(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Doctor id={self.id}, name={self.name}, specialty={self.specialty}>'
+    
+    serialize_rules = ('-appointments.doctor',)
 
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
@@ -43,3 +47,5 @@ class Appointment(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Appointment id={self.id}, date={self.date}, time={self.time}, patient_id={self.patient_id}, doctor_id={self.doctor_id}>'
+    
+    serialize_rules = ('-patient.appointments', '-doctor.appointments',)
