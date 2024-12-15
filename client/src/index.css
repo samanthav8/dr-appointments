@@ -1,7 +1,57 @@
-:root {
-  --bg: #282c34;
-  --header: #fff;
-  --link: #61dafb;
-  --text: hsla(0, 0%, 100%, 0.88);
+/* Navbar styling */
+.nav-link {
+  color: #99d6f2  !important; 
+  font-weight: 500; 
+  transition: all 0.2s ease-in-out;
 }
+
+.custom-nav-link:hover {
+  transform: scale(1.05); 
+}
+
+.navbar .active {
+  font-weight: bold;
+  color: #31ade3 !important;
+}
+
+.navbar-nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px; 
+}
+
+/*Home styling*/
+.home-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; 
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://media.istockphoto.com/id/911633218/vector/abstract-geometric-medical-cross-shape-medicine-and-science-concept-background.jpg?s=612x612&w=0&k=20&c=eYz8qm5xa5wbWCWKgjOpTamavekYv8XqPTA0MC4tHGA=');
+  background-size: cover;
+  background-position: center;
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white; 
+}
+
+.banner-text h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.banner-text p {
+  font-size: 1.5rem;
+}
+
 
