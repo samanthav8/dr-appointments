@@ -23,6 +23,20 @@ function Appointments({ patients, doctors }) {
     setEditingId(null);
   }
 
+  function deleteAppointment(id) {
+    fetch(`http://127.0.0.1:5555/appointments/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to delete appointment");
+        return response.json();
+      })
+      .then(() => {
+        setAppointments((prev) => prev.filter((appt) => appt.id !== id));
+      })
+      .catch((error) => console.error("Error deleting appointment:", error));
+  }
+
   return (
     <div>
       <h2>Appointments</h2>
@@ -31,6 +45,9 @@ function Appointments({ patients, doctors }) {
           <li key={appt.id}>
             Patient: {appt.patient.name}, Doctor: {appt.doctor.name}, Date: {appt.date}, Time: {appt.time}{" "}
             <button onClick={() => setEditingId(appt.id)}>Edit</button>
+            <button onClick={() => deleteAppointment(appt.id)} style={{color: "red" }}>
+              Delete
+            </button>
             {editingId === appt.id && (
               <EditAppointmentForm
                 appointment={appt}
