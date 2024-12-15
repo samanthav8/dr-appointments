@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import NewDoctorForm from "./NewDoctorForm";
 
 function Doctors({ doctors, onAddDoctor }) {
