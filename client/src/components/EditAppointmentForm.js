@@ -29,7 +29,7 @@ const appointmentSchema = Yup.object().shape({
   time: Yup.string().required("Time is required"),
 });
 
-function EditAppointmentForm({ appointment, onUpdateAppointment, patients, doctors, onClose }) {
+function EditAppointmentForm({ appointment, onUpdateAppointment, patients, doctors }) {
   return (
     <Formik
       initialValues={{
@@ -52,7 +52,6 @@ function EditAppointmentForm({ appointment, onUpdateAppointment, patients, docto
           .then((updatedAppt) => {
             onUpdateAppointment(updatedAppt);
             setSubmitting(false);
-            onClose(); 
           })
           .catch((error) => {
             console.error("Error updating appointment:", error);

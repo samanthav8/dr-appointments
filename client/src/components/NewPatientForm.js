@@ -13,15 +13,26 @@ function NewPatientForm({ onAddPatient }) {
       initialValues={{ name: "", dob: "" }}
       validationSchema={patientSchema}
       onSubmit={(values, { resetForm }) => {
-        const newPatient = { ...values, id: Date.now() };
-        
-        onAddPatient(newPatient);
-
-        resetForm();
+        fetch("http://127.0.0.1:5555/patients", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((newPatient) => {
+            onAddPatient(newPatient);
+            resetForm();
+          })
+          .catch((error) => console.error("Error adding patient:", error));
       }}
     >
       {() => (
-        <Form className="new-patient-form">
+        <Form>
           <div>
             <label>Name: </label>
             <Field name="name" />
