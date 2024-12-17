@@ -11,7 +11,6 @@ function App() {
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
 
-  // Fetch patients, doctors, and appointments
   useEffect(() => {
     fetch("http://127.0.0.1:5555/patients")
       .then((response) => response.json())
@@ -64,7 +63,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <div style={{ padding: "20px" }}>
+      <div>
         <Switch>
           <Route exact path="/">
             <Home />
@@ -72,15 +71,19 @@ function App() {
           <Route path="/patients">
             <Patients
               patients={patients}
+              doctors={doctors}
               appointments={appointments}
               onAddPatient={onAddPatient}
-              onAddAppointment={onAddAppointment}
               onDeleteAppointment={onDeleteAppointment}
               onUpdateAppointment={onUpdateAppointment}
             />
           </Route>
           <Route path="/doctors">
-            <Doctors doctors={doctors} onAddDoctor={onAddDoctor} />
+            <Doctors 
+              doctors={doctors} 
+              onAddDoctor={onAddDoctor}
+              appointments={appointments}
+            />
           </Route>
           <Route path="/appointments">
             <Appointments
