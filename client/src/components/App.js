@@ -9,17 +9,23 @@ import Appointments from "./Appointments";
 function App() {
   const [patients, setPatients] = useState([]);
   const [doctors, setDoctors] = useState([]);
+  const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5555/patients")
-      .then((r) => r.json())
+      .then((response) => response.json())
       .then(setPatients)
-      .catch((err) => console.error("Error fetching patients:", err));
+      .catch((error) => console.error("Error fetching patients:", error));
 
     fetch("http://127.0.0.1:5555/doctors")
-      .then((r) => r.json())
+      .then((response) => response.json())
       .then(setDoctors)
-      .catch((err) => console.error("Error fetching doctors:", err));
+      .catch((error) => console.error("Error fetching doctors:", error));
+
+    fetch("http://127.0.0.1:5555/appointments")
+      .then((response) => response.json())
+      .then(setAppointments)
+      .catch((error) => console.error("Error fetching appointments:", error));
   }, []);
 
   function onAddPatient(newPatient) {
@@ -30,27 +36,53 @@ function App() {
     setDoctors((prev) => [...prev, newDoctor]);
   }
 
+  function onAddAppointment(newAppointment) {
+    setAppointments((prev) => [...prev, newAppointment]);
+  }
+
+  function onDeleteAppointment(deletedAppointmentId) {
+    setAppointments((prev) => prev.filter((appt) => appt.id !== deletedAppointmentId));
+  }
+
+  function onUpdateAppointment(updatedAppointment) {
+    setAppointments((prevAppointments) =>
+      prevAppointments.map((appt) =>
+        appt.id === updatedAppointment.id ? updatedAppointment : appt
+      )
+    );
+  }
+  
   return (
     <>
       <NavBar />
-      <div style={{ padding: "20px" }}>
+      <div>
         <Switch>
           <Route exact path="/">
             <Home />
           </Route>
           <Route path="/patients">
-            <Patients patients={patients} onAddPatient={onAddPatient} />
+            <Patients
+              patients={patients}
+              appointments={appointments}
+              onAddPatient={onAddPatient}
+              onDeleteAppointment={onDeleteAppointment}
+              onUpdateAppointment={onUpdateAppointment}
+            />
           </Route>
           <Route path="/doctors">
-            <Doctors doctors={doctors} onAddDoctor={onAddDoctor} />
+            <Doctors
+              doctors={doctors}
+              appointments={appointments}
+              onAddDoctor={onAddDoctor}
+            />
           </Route>
           <Route path="/appointments">
-            <Appointments patients={patients} doctors={doctors} />
+            <Appointments onAddAppointment={onAddAppointment} patients={patients} doctors={doctors} />
           </Route>
         </Switch>
       </div>
     </>
-  );
+  );  
 }
 
-export default App;
+export default App

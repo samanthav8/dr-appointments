@@ -60,8 +60,7 @@ function EditAppointmentForm({ appointment, onUpdateAppointment, patients, docto
       }}
     >
       {({ isSubmitting }) => (
-        <Form style={{ border: "1px solid #ccc", padding: "10px", margin: "10px 0" }}>
-          <h4>Edit Appointment</h4>
+        <Form>
           <div>
             <label>Patient: </label>
             <Field as="select" name="patient_id">
@@ -107,11 +106,14 @@ function EditAppointmentForm({ appointment, onUpdateAppointment, patients, docto
             <ErrorMessage name="time" component="div" style={{ color: "red" }} />
           </div>
 
-          <button type="submit" disabled={isSubmitting}>Update Appointment</button>
+          <button type="submit" disabled={isSubmitting}>
+            Update Appointment
+          </button>
         </Form>
       )}
     </Formik>
   );
 }
+
 
 export default EditAppointmentForm;
