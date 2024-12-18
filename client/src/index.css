@@ -46,11 +46,50 @@
 }
 
 .banner-text h1 {
-  font-size: 48px; 
+  font-size: 48px;
   margin: 0;
 }
 
 .banner-text p {
   font-size: 24px;
 }
+
+/*Patient + Doctor Stylinh*/
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 250px; 
+  text-align: center;
+}
+
+
+.card ul {
+  list-style: none;
+  padding: 0;
+}
+
+
+/*Form Styling*/
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+
+.form-card {
+  text-align: center;
+}
+
 
