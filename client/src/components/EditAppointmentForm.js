@@ -21,8 +21,6 @@ function generateTimes() {
 const timeOptions = generateTimes();
 
 const appointmentSchema = Yup.object().shape({
-  patient_id: Yup.number().required("Patient is required"),
-  doctor_id: Yup.number().required("Doctor is required"),
   date: Yup.string()
     .matches(/^\d{4}-\d{2}-\d{2}$/, "Date must be YYYY-MM-DD")
     .required("Date is required"),
@@ -33,8 +31,6 @@ function EditAppointmentForm({ appointment, onUpdateAppointment, patients, docto
   return (
     <Formik
       initialValues={{
-        patient_id: appointment.patient_id,
-        doctor_id: appointment.doctor_id,
         date: appointment.date,
         time: appointment.time,
       }}
@@ -63,28 +59,12 @@ function EditAppointmentForm({ appointment, onUpdateAppointment, patients, docto
         <Form>
           <div>
             <label>Patient: </label>
-            <Field as="select" name="patient_id">
-              <option value="">Select a patient</option>
-              {patients.map((patient) => (
-                <option key={patient.id} value={patient.id}>
-                  {patient.name}
-                </option>
-              ))}
-            </Field>
-            <ErrorMessage name="patient_id" component="div" style={{ color: "red" }} />
+            <p>{patients.find((p) => p.id === appointment.patient_id)?.name || "Patient not found"}</p>
           </div>
 
           <div>
             <label>Doctor: </label>
-            <Field as="select" name="doctor_id">
-              <option value="">Select a doctor</option>
-              {doctors.map((doctor) => (
-                <option key={doctor.id} value={doctor.id}>
-                  {doctor.name} - {doctor.specialty}
-                </option>
-              ))}
-            </Field>
-            <ErrorMessage name="doctor_id" component="div" style={{ color: "red" }} />
+            <p>{doctors.find((d) => d.id === appointment.doctor_id)?.name || "Doctor not found"}</p>
           </div>
 
           <div>
@@ -114,6 +94,5 @@ function EditAppointmentForm({ appointment, onUpdateAppointment, patients, docto
     </Formik>
   );
 }
-
 
 export default EditAppointmentForm;

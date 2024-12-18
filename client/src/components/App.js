@@ -64,6 +64,7 @@ function App() {
             <Patients
               patients={patients}
               appointments={appointments}
+              doctors={doctors}
               onAddPatient={onAddPatient}
               onDeleteAppointment={onDeleteAppointment}
               onUpdateAppointment={onUpdateAppointment}
