@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NewPatientForm from "./NewPatientForm";
 import EditAppointmentForm from "./EditAppointmentForm";
 
-function Patients({ patients, appointments, onAddPatient, onDeleteAppointment, onUpdateAppointment, doctors }) {
+function Patients({ patients, onAddPatient, onDeleteAppointment, onUpdateAppointment, doctors }) {
   const [editingId, setEditingId] = useState(null);
 
   const handleDeleteAppointment = (appointmentId) => {
@@ -30,46 +30,36 @@ function Patients({ patients, appointments, onAddPatient, onDeleteAppointment, o
   return (
     <div>
       <div className="card-container">
-        {patients.map((patient) => {
-          const patientAppointments = appointments.filter(
-            (appt) => appt.patient_id === patient.id
-          );
+        {patients.map(({ id, name, dob, appointments = [] }) => (
+          <div key={id} className="card">
+            <h3>{name}</h3>
+            <p>DOB: {dob}</p>
+            <ul>
+              {appointments.length > 0 ? (
+                appointments.map((appt) => (
+                  <li key={appt.id}>
+                    Appointment with Dr. {appt.doctor.name} on {appt.date} at {appt.time}
+                    <div className="appointment-actions">
+                      <button onClick={() => handleEditClick(appt.id)}>Edit</button>
+                      <button onClick={() => handleDeleteAppointment(appt.id)}>Delete</button>
+                    </div>
 
-          return (
-            <div key={patient.id} className="card">
-              <h3>{patient.name}</h3>
-              <p>DOB: {patient.dob}</p>
-              <ul>
-                {patientAppointments.length > 0 ? (
-                  patientAppointments.map((appt) => (
-                    <li key={appt.id}>
-                      Appointment with Dr. {appt.doctor.name} on {appt.date} at {appt.time}
-                      <div className="appointment-actions">
-                        <button onClick={() => handleEditClick(appt.id)}>
-                          Edit
-                        </button>
-                        <button onClick={() => handleDeleteAppointment(appt.id)}>
-                          Delete
-                        </button>
-                      </div>
-
-                      {editingId === appt.id && (
-                        <EditAppointmentForm
-                          appointment={appt}
-                          onUpdateAppointment={handleUpdateAppointment}
-                          patients={patients}
-                          doctors={doctors} 
-                        />
-                      )}
-                    </li>
-                  ))
-                ) : (
-                  <li>No appointments scheduled</li>
-                )}
-              </ul>
-            </div>
-          );
-        })}
+                    {editingId === appt.id && (
+                      <EditAppointmentForm
+                        appointment={appt}
+                        onUpdateAppointment={handleUpdateAppointment}
+                        patients={patients}
+                        doctors={doctors}
+                      />
+                    )}
+                  </li>
+                ))
+              ) : (
+                <li>No appointments scheduled</li>
+              )}
+            </ul>
+          </div>
+        ))}
       </div>
       <div className="form-container">
         <div className="form-card">
@@ -82,4 +72,3 @@ function Patients({ patients, appointments, onAddPatient, onDeleteAppointment, o
 }
 
 export default Patients;
-

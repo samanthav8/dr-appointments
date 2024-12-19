@@ -59,12 +59,12 @@ function EditAppointmentForm({ appointment, onUpdateAppointment, patients, docto
         <Form>
           <div>
             <label>Patient: </label>
-            <p>{patients.find((p) => p.id === appointment.patient_id)?.name || "Patient not found"}</p>
+            <p>{patients.find((patient) => patient.id === appointment.patient_id)?.name || "Patient not found"}</p>
           </div>
 
           <div>
             <label>Doctor: </label>
-            <p>{doctors.find((d) => d.id === appointment.doctor_id)?.name || "Doctor not found"}</p>
+            <p>{doctors.find((doctor) => doctor.id === appointment.doctor_id)?.name || "Doctor not found"}</p>
           </div>
 
           <div>

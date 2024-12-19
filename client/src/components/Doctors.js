@@ -1,19 +1,19 @@
 import React from "react";
 import NewDoctorForm from "./NewDoctorForm";
 
-function Doctors({ doctors, appointments, onAddDoctor }) {
+function Doctors({ doctors, onAddDoctor }) {
   return (
     <div>
       <div className="card-container">
-        {doctors.map((doctor) => {
+        {doctors.map(({ id, name, specialty, appointments = [] }) => {
           const doctorAppointments = appointments.filter(
-            (appt) => appt.doctor_id === doctor.id && new Date(appt.date) > new Date()
+            (appt) => new Date(appt.date) > new Date()
           );
 
           return (
-            <div key={doctor.id} className="card">
-              <h2>{doctor.name}</h2>
-              <p>Specialty: {doctor.specialty}</p>
+            <div key={id} className="card">
+              <h2>{name}</h2>
+              <p>Specialty: {specialty}</p>
               <ul>
                 {doctorAppointments.length > 0 ? (
                   doctorAppointments.map((appt) => (

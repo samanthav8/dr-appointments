@@ -45,7 +45,7 @@ function NewAppointmentForm({ onAddAppointment, patients, doctors }) {
             return response.json();
           })
           .then((newAppt) => {
-            onAddAppointment(newAppt);
+            onAddAppointment(newAppt); 
             resetForm();
           })
           .catch((error) => console.error("Error adding appointment:", error));
